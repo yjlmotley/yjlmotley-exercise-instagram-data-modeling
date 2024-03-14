@@ -8,65 +8,67 @@ from eralchemy2 import render_er
 Base = declarative_base()
 
 class PostDisike(Base): 
-    __tablename__ = 'Post Dislike'
+    __tablename__ = 'post_dislike'
     id = Column(Integer, primary_key=True)
-    postID = Column(Integer, ForeignKey('Post.id'))
+    postID = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     dislike = Column(Boolean, nullable=False)
     count = Column(Integer)
 
 class PostLike(Base): 
-    __tablename__ = 'Post Like'
+    __tablename__ = 'post_like'
     id = Column(Integer, primary_key=True)
-    postID = Column(Integer, ForeignKey('Post.id'))
+    postID = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     like = Column(Boolean, nullable=False)
     count = Column(Integer)
 
 class Post(Base):
-    __tablename__ = 'Post'
+    __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     post_text = Column(String(150), nullable=False)
-    # content = 
-    user_id = Column(Integer, ForeignKey('User.id'))
-    comment_id = Column(Integer, ForeignKey('Comment.id'))
+    post_media = Column(String(512), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    comment_id = Column(Integer, ForeignKey('comment.id'))
 
 class CommentDisike(Base): 
-    __tablename__ = 'Comment Dislike'
+    __tablename__ = 'comment_dislike'
     id = Column(Integer, primary_key=True)
-    commentID = Column(Integer, ForeignKey('Comment.id'))
+    commentID = Column(Integer, ForeignKey('comment.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     dislike = Column(Boolean, nullable=False)
     count = Column(Integer)
 
 class CommentLike(Base): 
-    __tablename__ = 'Comment Like'
+    __tablename__ = 'comment_like'
     id = Column(Integer, primary_key=True)
-    commentID = Column(Integer, ForeignKey('Comment.id'))
+    commentID = Column(Integer, ForeignKey('comment.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     like = Column(Boolean, nullable=False)
     count = Column(Integer)
 
 class Comment(Base):
-    __tablename__ = 'Comment'
+    __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     comment_text = Column(String(1000), nullable=False)
-    user_id = Column(Integer, ForeignKey('User.id'))
-    post_id = Column(Integer, ForeignKey('Post.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
 
 class User(Base):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     username = Column(String(50), nullable=False)
-    followerID = Column(Integer, ForeignKey('Follower.id'))
     email = Column(String(250), nullable=False)
 
 class FollowRequest(Base):
-    __tablename__ = 'Follow Request'
+    __tablename__ = 'follow_request'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    userID = Column(Integer, ForeignKey('User.id'))
-    followerID = Column(Integer, ForeignKey('Follower.id'))
-    followedID = Column(Integer, ForeignKey('Followed.id'))
+    followerID = Column(Integer, ForeignKey('user.id'))
+    followedID = Column(Integer, ForeignKey('user.id'))
     Accepted = Column(Boolean, nullable=False)
 
     def to_dict(self):
