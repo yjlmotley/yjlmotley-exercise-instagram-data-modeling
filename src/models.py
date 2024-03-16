@@ -1,8 +1,5 @@
-import os
-import sys
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base
 from eralchemy2 import render_er
 
 Base = declarative_base()
@@ -34,7 +31,7 @@ class Post(Base):
 class CommentDisike(Base): 
     __tablename__ = 'comment_dislike'
     id = Column(Integer, primary_key=True)
-    commentID = Column(Integer, ForeignKey('comment.id'))
+    comment_id = Column(Integer, ForeignKey('comment.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
     dislike = Column(Boolean, nullable=False)
     count = Column(Integer)
@@ -42,7 +39,7 @@ class CommentDisike(Base):
 class CommentLike(Base): 
     __tablename__ = 'comment_like'
     id = Column(Integer, primary_key=True)
-    commentID = Column(Integer, ForeignKey('comment.id'))
+    comment_id = Column(Integer, ForeignKey('comment.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
     like = Column(Boolean, nullable=False)
     count = Column(Integer)
@@ -67,9 +64,9 @@ class FollowRequest(Base):
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    followerID = Column(Integer, ForeignKey('user.id'))
-    followedID = Column(Integer, ForeignKey('user.id'))
-    Accepted = Column(Boolean, nullable=False)
+    follower_id = Column(Integer, ForeignKey('user.id'))
+    followed_id = Column(Integer, ForeignKey('user.id'))
+    accepted = Column(Boolean, nullable=False)
 
     def to_dict(self):
         return {}
