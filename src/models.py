@@ -7,7 +7,7 @@ Base = declarative_base()
 class PostDisike(Base): 
     __tablename__ = 'post_dislike'
     id = Column(Integer, primary_key=True)
-    postID = Column(Integer, ForeignKey('post.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
     dislike = Column(Boolean, nullable=False)
     count = Column(Integer)
@@ -15,7 +15,7 @@ class PostDisike(Base):
 class PostLike(Base): 
     __tablename__ = 'post_like'
     id = Column(Integer, primary_key=True)
-    postID = Column(Integer, ForeignKey('post.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
     like = Column(Boolean, nullable=False)
     count = Column(Integer)
