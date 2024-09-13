@@ -1,48 +1,36 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class PostDisike(Base): 
-    __tablename__ = 'post_dislike'
-    id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey('post.id'))
-    user_id = Column(Integer, ForeignKey('user.id'))
-    dislike = Column(Boolean, nullable=False)
-    count = Column(Integer)
 
 class PostLike(Base): 
     __tablename__ = 'post_like'
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey('post.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
-    like = Column(Boolean, nullable=False)
-    count = Column(Integer)
 
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     post_text = Column(String(150), nullable=False)
-    post_media = Column(String(512), nullable=False)
+    post_media = Column(String(512), nullable=True) 
     user_id = Column(Integer, ForeignKey('user.id'))
-    comment_id = Column(Integer, ForeignKey('comment.id'))
+    comments = relationship('Comment', backref='post')  # One-to-many relationship with comments
+    likes = relationship('PostLike', backref='post')
 
-class CommentDisike(Base): 
+class CommentDislike(Base): 
     __tablename__ = 'comment_dislike'
     id = Column(Integer, primary_key=True)
     comment_id = Column(Integer, ForeignKey('comment.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
-    dislike = Column(Boolean, nullable=False)
-    count = Column(Integer)
 
 class CommentLike(Base): 
     __tablename__ = 'comment_like'
     id = Column(Integer, primary_key=True)
     comment_id = Column(Integer, ForeignKey('comment.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
-    like = Column(Boolean, nullable=False)
-    count = Column(Integer)
 
 class Comment(Base):
     __tablename__ = 'comment'
@@ -50,14 +38,15 @@ class Comment(Base):
     comment_text = Column(String(1000), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     post_id = Column(Integer, ForeignKey('post.id'))
+    likes = relationship('CommentLike', backref='comment')
+    dislikes = relationship('CommentDislike', backref='comment')
 
 class User(Base):
     __tablename__ = 'user'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    username = Column(String(50), nullable=False)
-    email = Column(String(250), nullable=False)
+    username = Column(String(50), nullable=False, unique=True)
+    email = Column(String(250), nullable=False, unique=True)
+    password = Column(String(256), nullable=False)
 
 class FollowRequest(Base):
     __tablename__ = 'follow_request'

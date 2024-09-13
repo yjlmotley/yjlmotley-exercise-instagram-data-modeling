@@ -1,0 +1,10 @@
+last checked for bugs: 9.13.24
+
+for this project:
+- `pipenv shell`
+- `pipenv install`
+
+* adjust your models.py as needed
+
+- `python src/models.py`
+- then check your diangram.png
