@@ -14,8 +14,8 @@ class PostLike(Base):
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
-    post_text = Column(String(150), nullable=False)
-    post_media = Column(String(512), nullable=True) 
+    post_text = Column(String(150), nullable=True)
+    post_media = Column(String(512), nullable=False) 
     user_id = Column(Integer, ForeignKey('user.id'))
     comments = relationship('Comment', backref='post')  # One-to-many relationship with comments
     likes = relationship('PostLike', backref='post')
@@ -48,6 +48,13 @@ class User(Base):
     email = Column(String(250), nullable=False, unique=True)
     password = Column(String(256), nullable=False)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email
+        }
+
 class FollowRequest(Base):
     __tablename__ = 'follow_request'
     # Here we define columns for the table address.
@@ -57,8 +64,6 @@ class FollowRequest(Base):
     followed_id = Column(Integer, ForeignKey('user.id'))
     accepted = Column(Boolean, nullable=False)
 
-    def to_dict(self):
-        return {}
 
 ## Draw from SQLAlchemy base
 try:
